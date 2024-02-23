@@ -23,6 +23,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Avatar, Tooltip } from '@mui/material';
+import Dashboard from './Dashboard/Dashboard';
+
+
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -99,6 +103,7 @@ export default function MiniDrawer() {
     const theme = useTheme();
     const navigate = useNavigate()
     const [open, setOpen] = React.useState(false);
+    const [flag,setFlag]=React.useState("table")
 
     const name = JSON.parse(localStorage.getItem("user"))[0].name
 
@@ -160,7 +165,9 @@ export default function MiniDrawer() {
                 <Divider />
 
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{
+                        setFlag("dash");
+                    }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -182,7 +189,9 @@ export default function MiniDrawer() {
                         </ListItemButton>
                     </ListItem>
 
-                    <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{
+                        setFlag("table");
+                    }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -201,7 +210,7 @@ export default function MiniDrawer() {
                                 <SearchIcon sx={{ color: open ? "white" : "#253053" }} />
                                 {/* {index === 2 && <LogoutIcon  sx={{ color: open ? "white" : "#253053" }} />} */}
                             </ListItemIcon>
-                            <ListItemText primary="Search" sx={{ opacity: open ? 1 : 0 }} />
+                            <ListItemText primary="Companies" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
 
@@ -229,7 +238,11 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
                 {/* <CustomizedTables /> */}
-                <BasicTable />
+                {/* <BasicTable /> */}
+                {flag==="dash"? <Dashboard/>:<BasicTable/>}
+
+                
+                {/* <Dashboard/> */}
             </Box>
         </Box>
     );

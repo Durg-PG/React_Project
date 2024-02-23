@@ -45,6 +45,10 @@
 .add-btn{
     margin-top: 10rem;
 }
+
+.pagination{
+    align-items: start;
+}
 @media screen and (max-width: 1200px){
     .Table{
         margin-top: 2rem;

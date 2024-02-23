@@ -23,6 +23,12 @@ import { useEffect } from "react";
 // import '../../style.css'
 import "../style.css"
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import TablePagination from '@mui/material/TablePagination';
+import { TableFooter } from "@mui/material";
+import DownloadIcon from '@mui/icons-material/Download';
+import AddIcon from '@mui/icons-material/Add';
+
+import {CSVLink} from "react-csv"
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -46,7 +52,22 @@ export default function BasicTable() {
   const [filteredComp, setFilteredComp] = useState("");
   const [flag, setFlag] = useState("false");
 
-  console.log(company);
+  // const [rows, setRows] = useState([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const [MasterChecked,setMasterChecked] = useState(false)
+  const [selectedCompanies,setSelectedCompanies] = useState([])
+  
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const deleteCompany = (e) => {
     e.preventDefault();
@@ -61,6 +82,46 @@ export default function BasicTable() {
   useEffect(() => {
     localStorage.setItem("company", JSON.stringify(company));
   }, [company]);
+
+  const onItemCheck = (e, company) => {
+    let tempList = company;
+    tempList.map((tempcompany) => {
+      if (tempcompany.id === company.id) {
+        tempcompany.selected = e.target.checked;
+      }
+      return tempcompany;
+    })
+    const totalItems = company.length;
+    const totalCheckedItems = tempList.filter((e) => e.selected).length;
+    // Update State
+setMasterChecked(totalItems === totalCheckedItems)
+setSelectedCompanies(company.filter((e) => e.selected))
+ 
+};
+const onMasterCheck=(e) =>{
+  let tempList = company;
+  // Check/ UnCheck All Items
+  tempList.map((company) => (company.selected = e.target.checked));
+ 
+  //Update State
+  setSelectedCompanies(company.filter((e) => e.selected))
+  setMasterChecked(e.target.checked)
+ 
+}
+ 
+const getSelectedRows =()=> {
+  setSelectedCompanies(company.filter((e) => e.selected));
+}
+const csvData=[
+  // getSelectedRows()
+  ['Id','Company Name','Location','Company Type','Industry','Stage'],
+  selectedCompanies.map(
+    ({id,compName,location,compType,industry,stage})=>[
+    id,compName,location,compType,industry,stage
+  ])
+
+]
+
 
   return (
     <div className="Table">
@@ -129,8 +190,11 @@ export default function BasicTable() {
           </Dropdown.Menu>
         </Dropdown>
 
+        <CSVLink filename="Company List.csv" data={csvData} className="downloadbtn">
+          <Button variant="contained"  size="medium" className="add-btn"><DownloadIcon></DownloadIcon></Button>
+        </CSVLink>
         <Link to="/add">
-          <Button variant="contained"  size="medium" className="add-btn">Add company</Button>
+          <Button variant="contained"  size="medium" className="add-btn"><AddIcon></AddIcon></Button>
         </Link>
         </div>
       </div>
@@ -142,7 +206,7 @@ export default function BasicTable() {
           <TableHead>
             <TableRow>
               <TableCell align="left">
-                <Checkbox {...label} />
+                <Checkbox {...label} checked={MasterChecked} id="mastercheck" onChange={(e) => onMasterCheck(e)}/>
               </TableCell>
               <TableCell align="left">Company Name</TableCell>
               <TableCell align="left">Location</TableCell>
@@ -154,19 +218,22 @@ export default function BasicTable() {
           </TableHead>
           <TableBody>
             {/* {rows.map((row) => ( */}
-            {company
+            {company && company
               .filter((company) => {
                 return flag==='false'?
                 (search.toLowerCase() !== "" ? company.name.toLowerCase().includes(search.toLowerCase()):company)
               : (search.toLowerCase() !== "" ? company.name.toLowerCase().includes(search.toLowerCase()) &&company.stage===filteredComp : company.stage===filteredComp)
               })
+              .slice(page*rowsPerPage, page*rowsPerPage+rowsPerPage)
               .map((company, index) => (
                 <TableRow
-                  key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  key={company.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 }}}
                 >
+
                   <TableCell align="left">
-                    <Checkbox {...label} id={company.id} />
+                    <Checkbox {...label} id='rowcheck{company.id}' checked={company.selected}
+                  onChange={(e) => onItemCheck(e, company)}/>
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {company.name}
@@ -194,7 +261,21 @@ export default function BasicTable() {
               ))}
           </TableBody>
         </Table>
+        <TableFooter>
+        <div className="pagination">
+      <TablePagination
+      component="div"
+      count={company.length}
+      page={page}
+      onPageChange={handleChangePage}
+      rowsPerPage={rowsPerPage}
+      rowsPerPageOptions={[5, 10, 25,50,100]}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+    </div>
+        </TableFooter>
       </TableContainer>
+      
     </div>
   );
 }
