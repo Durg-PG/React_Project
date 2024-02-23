@@ -1,0 +1,87 @@
+.newcomp-form {
+
+  width: 360px;
+  padding: 2% 0 2%;
+  margin: auto;
+}
+.newcomp-form h2 {
+  text-align: center;
+  background: #0000FF;
+  margin-bottom: 0;
+  padding: 2%;
+  color: #ffffff;
+}
+.newcomp-form label {
+  text-align: left;
+  width: 100%;
+  font-family: sans-serif;
+  font-weight: 550;
+  text-transform: capitalize;
+  color: rgb(134, 116, 116);
+}
+
+.newcomp-form input {
+  text-transform: capitalize;
+  margin-bottom: 2%;
+}
+
+.form-innerdiv {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 45px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form-innerdiv button {
+  font-family: "Gill Sans", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #0000FF;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.form-innerdiv button:hover,
+.newcomp-form button:active,
+.newcomp-form button:focus {
+  background: #43a047;
+}
+
+
+.main-div{
+    width: 500px;
+    height: 400px;
+    background-color: red;
+    
+} */
+.dropdown {
+  /* width: 10%; */
+  padding: 10px;
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+.dropdown select {
+  width: 20ppx;
+
+  display: inline-block;
+}
+.dropdown label {
+  padding: 10px;
+  display: inline-block;
+}
+
+.extra {
+  display: inline;
+}
+
+.extra span {
+  padding: 10px;
+}

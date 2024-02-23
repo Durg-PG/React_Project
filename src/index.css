@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.sideMenu{
+  display: flex;
+  flex-direction : columns;
+  left: 0px;
+  /* width:280px; */
+  height: 100vh;
+  background-color: #253053;
+  color:white;
+}

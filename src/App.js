@@ -5,17 +5,25 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Errror from './components/Errror';
 import {Routes,Route} from "react-router-dom"
+import { CompanyProvider } from './components/Context/CompanyContext';
+import AddCompany from './components/AddCompany';
 
 function App() {
   return (
   <>
     {/* <Header /> */}
+    <CompanyProvider>
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='/login' element={<Login />} />
       <Route path='/dashboard' element={<Dashboard />} />
+      <Route path='/add' element={<AddCompany />} />
+      
       <Route path='*' element={<Errror />} />
+
     </Routes>
+    </CompanyProvider>
+
   </>
   );
 }
