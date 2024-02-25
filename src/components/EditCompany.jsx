@@ -1,61 +1,63 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { CompanyContext } from "./Context/CompanyContext";
+import { CompanyContext, editContext } from "./Context/CompanyContext";
 import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
-import { useNavigate } from "react-router-dom";
 import "../components/style.css"
+import { Modal } from "react-bootstrap";
 
-import { Modal} from 'react-bootstrap';
-
-export default function AddCompany() {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [compType, setCompType] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [stage, setStage] = useState("Active");
+export default function EditCompany() {
+   const[editid,setId] =  useContext(editContext)
+  const [name, setName] = useState(editid.name);
+  const [location, setLocation] = useState(editid.location);
+  const [compType, setCompType] = useState(editid.compType);
+  const [industry, setIndustry] = useState(editid.industry);
+  const [stage, setStage] = useState(editid.stage);
 
   const [company, setCompany] = useContext(CompanyContext);
-  // console.log(company);
-// console.log('in add');
-  const navigate = useNavigate();
+
   const [validated, setValidated] = useState(false);
 
+
   const [show, setShow] = useState(false);
+//   console.log('in edit');
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  
+  
 
   var companyNames = [];
   company.map((comp) => {
+    if(comp.name.toLowerCase() !== editid.name.toLowerCase()){
     companyNames.push(comp.name.toLowerCase());
-  },[]);
-  const addCompany = (e) => {
+}},[]);
+
+  const editCompany = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    // console.log(form.checkValidity());
-    // console.log({ validated });
 
     if (form.checkValidity() == true) {
       if (companyNames.includes(name.toLowerCase())) {
         // alert('company is already existing')
-handleShow()
         // navigate("/dashboard");
+        handleShow()
 
       } else {
-      const newCompany = [
-        ...company,
-        {
-          id: uuidv4(),
-          name: name,
-          location: location,
-          compType: compType,
-          industry: industry,
-          stage: stage,
-        },
-      ];
+        const editdata = company.map((item)=>
+        item.id === editid.id ?  
+          {
+            name: name,
+            location: location,
+            compType: compType,
+            industry: industry,
+            stage: stage,
+          }
+          : item)
+        
+  
+        setCompany(editdata);
 
-      setCompany(newCompany);
       // navigate("/dashboard");
     }
    } else {
@@ -72,7 +74,7 @@ handleShow()
   return (
     <>
       <div className="newcomp-form">
-        <h2>New Company</h2>
+        {/* <h2>New Company</h2> */}
         <div className="form-innerdiv">
           
           <Form
@@ -80,7 +82,7 @@ handleShow()
             autoComplete="off"
             noValidate
             validated={validated}
-            onSubmit={addCompany}
+            onSubmit={editCompany}
           >
 
             <Form.Group>
@@ -94,7 +96,7 @@ handleShow()
                 placeholder="eg. Raytheon technologies"
                 onChange={(e) => setName(e.target.value)}
                 id="name"
-                // value={name}
+                value={name}
                 required
               />
 
@@ -113,6 +115,7 @@ handleShow()
                 className="form-control"
                 placeholder="eg. Boston"
                 required
+                value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <Form.Control.Feedback type="invalid">
@@ -133,6 +136,7 @@ handleShow()
                 // name="formHorizontalRadios"
                 id="formHorizontalRadios1"
                 className="radio-btn"
+                checked={compType === 'B2B'}
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Check
@@ -144,6 +148,7 @@ handleShow()
                 id="formHorizontalRadios2"
                 className="radio-btn"
                 value="B2C"
+                checked={compType === 'B2C'}
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Control.Feedback type="invalid">
@@ -162,6 +167,7 @@ handleShow()
                 id="industry"
                 className="form-control"
                 placeholder="eg. software"
+                value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
                 required
               />
@@ -187,7 +193,7 @@ handleShow()
             </Form.Group>
 
             <button className="btn btn-primary" type="submit">
-              Add
+              save
             </button>
           </Form>
         </div>
@@ -195,7 +201,7 @@ handleShow()
 
       <Modal show={show}>
     <Modal.Body>
-        <p>company already exits</p>
+        <p>company with this name already exits</p>
         <button onClick={handleClose}>ok</button>
     </Modal.Body>
    

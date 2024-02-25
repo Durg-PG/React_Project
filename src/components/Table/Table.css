@@ -35,8 +35,8 @@
     padding-bottom: 10px;
 }
 .Filter-add{
-    display: inline-flex;
-    margin-left: 25rem;
+    /* display: inline-flex; */
+    /* margin-left: 25rem; */
     float: right;
     margin-right: 0;
     gap : 95px
@@ -53,4 +53,19 @@
     .Table{
         margin-top: 2rem;
     }
+}
+
+.modal-content{
+    margin-top: 70px;
+
+}
+
+.modal-header{
+    border-bottom:none
+}
+
+.modal-dialog {
+    max-width: 800px;
+    margin: 1.75rem auto;
+    padding-left: 65px;
 }

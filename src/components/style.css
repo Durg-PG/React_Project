@@ -1,15 +1,16 @@
 .newcomp-form {
 
-  width: 360px;
-  padding: 2% 0 2%;
+  width: 90%;
+  /* padding: 2% 0 2%; */
   margin: auto;
 }
 .newcomp-form h2 {
   text-align: center;
-  background: #0000FF;
-  margin-bottom: 0;
+  background: green;
+  /* margin-bottom: 0; */
   padding: 2%;
   color: #ffffff;
+  width: 100%;
 }
 .newcomp-form label {
   text-align: left;
@@ -29,7 +30,7 @@
   position: relative;
   z-index: 1;
   background: #ffffff;
-  max-width: 360px;
+  /* max-width: 360px; */
   margin: 0 auto;
   padding: 45px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -39,7 +40,7 @@
   font-family: "Gill Sans", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #0000FF;
+  background: green;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -59,7 +60,7 @@
 .main-div{
     width: 500px;
     height: 400px;
-    background-color: red;
+    /* background-color: red; */
     
 } */
 .dropdown {

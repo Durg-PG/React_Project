@@ -17,18 +17,20 @@ import Col from "react-bootstrap/esm/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import { CompanyContext } from "../Context/CompanyContext";
+import { CompanyContext, editContext } from "../Context/CompanyContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 // import '../../style.css'
 import "../style.css"
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import TablePagination from '@mui/material/TablePagination';
-import { TableFooter } from "@mui/material";
+import { TableFooter, capitalize } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
-
+import { Modal} from 'react-bootstrap';
 import {CSVLink} from "react-csv"
+import AddCompany from "../AddCompany";
+import EditCompany from "../EditCompany";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -58,7 +60,16 @@ export default function BasicTable() {
 
   const [MasterChecked,setMasterChecked] = useState(false)
   const [selectedCompanies,setSelectedCompanies] = useState([])
-  
+  const [show, setShow] = useState(false);
+  const[mod,setMod] = useState('')
+  const [editid,setId] = useContext(editContext)
+  const handleShow = () => {
+      setShow(true)
+   };
+  const handleClose = () => {
+    setShow(false)
+    setMod('')
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -81,16 +92,20 @@ export default function BasicTable() {
 
   useEffect(() => {
     localStorage.setItem("company", JSON.stringify(company));
+    handleClose()
   }, [company]);
 
-  const onItemCheck = (e, company) => {
+  const onItemCheck = (e, comp) => {
     let tempList = company;
+    // console.log(tempList)
     tempList.map((tempcompany) => {
-      if (tempcompany.id === company.id) {
+      // console.log(tempcompany)
+      if (tempcompany.id === comp.id) {
         tempcompany.selected = e.target.checked;
       }
       return tempcompany;
-    })
+    }
+    )
     const totalItems = company.length;
     const totalCheckedItems = tempList.filter((e) => e.selected).length;
     // Update State
@@ -98,6 +113,7 @@ setMasterChecked(totalItems === totalCheckedItems)
 setSelectedCompanies(company.filter((e) => e.selected))
  
 };
+
 const onMasterCheck=(e) =>{
   let tempList = company;
   // Check/ UnCheck All Items
@@ -116,14 +132,15 @@ const csvData=[
   // getSelectedRows()
   ['Id','Company Name','Location','Company Type','Industry','Stage'],
   selectedCompanies.map(
-    ({id,compName,location,compType,industry,stage})=>[
-    id,compName,location,compType,industry,stage
+    ({id,name,location,compType,industry,stage})=>[
+    id,name,location,compType,industry,stage
   ])
 
 ]
 
 
   return (
+    <>
     <div className="Table">
       <div className="headerRow">
         <h2 style={{color:"#253053"}}>Companies</h2>
@@ -150,7 +167,7 @@ const csvData=[
               <Form.Control
                 type="text"
                 className="form-control "
-                placeholder="Search Company"
+                placeholder="Type Company Name...."
                 onChange={(e) => setSearch(e.target.value)}
               />
             </InputGroup>
@@ -191,11 +208,17 @@ const csvData=[
         </Dropdown>
 
         <CSVLink filename="Company List.csv" data={csvData} className="downloadbtn">
-          <Button variant="contained"  size="medium" className="add-btn"><DownloadIcon></DownloadIcon></Button>
+          <Button onClick={getSelectedRows} variant="contained"  size="medium" className="add-btn"><DownloadIcon></DownloadIcon></Button>
         </CSVLink>
-        <Link to="/add">
+              <Button variant="contained"  size="medium" className="add-btn" onClick={()=>{
+                setMod('add')
+                handleShow()
+              }
+              } data-toggle="modal"><AddIcon/></Button>					
+
+        {/* <Link to="/add"> 
           <Button variant="contained"  size="medium" className="add-btn"><AddIcon></AddIcon></Button>
-        </Link>
+         </Link> */}
         </div>
       </div>
       <TableContainer
@@ -214,7 +237,7 @@ const csvData=[
               <TableCell align="left">Industry</TableCell>
               <TableCell align="left">Stage</TableCell>
               <TableCell align="left">Actions</TableCell>
-            </TableRow>
+            </TableRow> 
           </TableHead>
           <TableBody>
             {/* {rows.map((row) => ( */}
@@ -232,7 +255,7 @@ const csvData=[
                 >
 
                   <TableCell align="left">
-                    <Checkbox {...label} id='rowcheck{company.id}' checked={company.selected}
+                    <Checkbox id='rowcheck{company.id}' checked={company.selected}
                   onChange={(e) => onItemCheck(e, company)}/>
                   </TableCell>
                   <TableCell component="th" scope="row">
@@ -252,10 +275,17 @@ const csvData=[
                       color="error"
                       size="small"
                       id={company.id}
-                      onClick={(e) => deleteCompany(e)}
+                      onClick={()=>{
+                        setMod('edit')
+                        setId(company)
+                        handleShow()
+                      }}
+                       data-toggle="modal"
+                      // onClick={(e) => deleteCompany(e)}
                     >
-                      Delete
-                    </Button>{" "}
+                      edit
+                      {/* Delete */}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -277,5 +307,24 @@ const csvData=[
       </TableContainer>
       
     </div>
+    <Modal show={show} onHide={handleClose}>
+    <Modal.Header closeButton>
+        {/* <Modal.Title>
+            ADD
+        </Modal.Title> */}
+    </Modal.Header>
+    <Modal.Body>
+        {/* <AddCompany /> */}
+       {mod === 'add'?<AddCompany/>:''}
+        {mod==='edit'?<EditCompany/>:''}
+    </Modal.Body>
+    {/* <Modal.Footer>
+             <Button variant="secondary" onClick={handleClose}>
+                Close Button
+            </Button> 
+    </Modal.Footer> */}
+</Modal>
+
+</>
   );
 }
