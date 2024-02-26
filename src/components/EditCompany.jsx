@@ -47,6 +47,7 @@ export default function EditCompany() {
         const editdata = company.map((item)=>
         item.id === editid.id ?  
           {
+            id:editid.id,
             name: name,
             location: location,
             compType: compType,
