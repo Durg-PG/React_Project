@@ -1,20 +1,10 @@
 import React from 'react'
 import ReactECharts from 'echarts-for-react';
-import { useContext } from 'react';
-import { CompanyContext } from '../Context/CompanyContext';
 
-const PieChart_Stage = () => {
-    const [company, setCompany] = useContext(CompanyContext);
-    const inactiveCompany = company.filter((item) => {
-        return item.stage === "Inactive";
-      });
-      const activeCompany = company.filter((item) => {
-        return item.stage === "Active";
-      });
-
+const PieChart = (props) => {
     const option = {
         title: {
-          text: 'Stage',
+          text: props.text,
           // subtext: 'Fake Data',
           left: 'center'
         },
@@ -32,8 +22,8 @@ const PieChart_Stage = () => {
             stillShowZeroSum: false,
             radius: '50%',
             data: [
-              { value: activeCompany.length, name: 'Active ' },
-              { value: inactiveCompany.length, name: 'Inactive' },
+              { value: props.element1.value1, name: props.element1.name1 },
+              { value: props.element2.value2, name: props.element2.name2 },
               
             ],
             emphasis: {
@@ -46,15 +36,9 @@ const PieChart_Stage = () => {
           }
         ]
       };
-   
-    // var activeCompany=[]
-    // var inactiveCompany=[]
-
-    
   return (
-    
     <ReactECharts option={option} style={{ height: "80vh", left: 50, top: 50, width: "50%" }} />
   )
 }
 
-export default PieChart_Stage
+export default PieChart
