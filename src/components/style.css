@@ -6,7 +6,7 @@
 }
 .newcomp-form h2 {
   text-align: center;
-  background: green;
+  background: #253053;
   /* margin-bottom: 0; */
   padding: 2%;
   color: #ffffff;
@@ -40,7 +40,7 @@
   font-family: "Gill Sans", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: green;
+  background: #253053;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -53,7 +53,7 @@
 .form-innerdiv button:hover,
 .newcomp-form button:active,
 .newcomp-form button:focus {
-  background: #43a047;
+  background: #6c86dd;
 }
 
 

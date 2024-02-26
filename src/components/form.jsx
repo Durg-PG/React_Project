@@ -3,11 +3,11 @@ import { useState } from "react";
 import { CompanyContext, editContext } from "./Context/CompanyContext";
 import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
-import "../components/style.css"
+import "../components/style.css";
 import { Modal } from "react-bootstrap";
 
 export default function EditCompany() {
-   const[editid,setId] =  useContext(editContext)
+  const [editid, setId] = useContext(editContext);
   const [name, setName] = useState(editid.name);
   const [location, setLocation] = useState(editid.location);
   const [compType, setCompType] = useState(editid.compType);
@@ -16,76 +16,34 @@ export default function EditCompany() {
 
   const [company, setCompany] = useContext(CompanyContext);
 
-  const [validated, setValidated] = useState(false);
-
-
-  const [show, setShow] = useState(false);
-//   console.log('in edit');
-
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  
-  
-
-  var companyNames = [];
-  company.map((comp) => {
-    if(comp.name.toLowerCase() !== editid.name.toLowerCase()){
-    companyNames.push(comp.name.toLowerCase());
-}},[]);
-
-  const editCompany = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-
-    if (form.checkValidity() == true) {
-      if (companyNames.includes(name.toLowerCase())) {
-        // alert('company is already existing')
-        // navigate("/dashboard");
-        handleShow()
-
-      } else {
-        const editdata = company.map((item)=>
-        item.id === editid.id ?  
-          {
-            id:editid.id,
+  const handleSub = (e) => {
+    const data = company.map((item) =>
+      item.id === editid.id
+        ? {
+            id: editid.id,
             name: name,
             location: location,
             compType: compType,
             industry: industry,
             stage: stage,
           }
-          : item)
-        
-  
-        setCompany(editdata);
-
-      // navigate("/dashboard");
-    }
-   } else {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    setValidated(true);
+        : item
+    );
+    setCompany(data);
   };
-
-  useEffect(() => {
-    localStorage.setItem("company", JSON.stringify(company));
-  }, [company]);
 
   return (
     <>
       <div className="newcomp-form">
         {/* <h2>New Company</h2> */}
         <div className="form-innerdiv">
-          
           <Form
             className="compForm"
             autoComplete="off"
             noValidate
             validated={validated}
-            onSubmit={editCompany}
+            onSubmit={handleSub}
           >
-
             <Form.Group>
               <Form.Label htmlFor="name" className="col-sm-2 col-form-label">
                 Company Name
@@ -100,10 +58,6 @@ export default function EditCompany() {
                 value={name}
                 required
               />
-
-              <Form.Control.Feedback type="invalid">
-                Please enter company name.
-              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -119,9 +73,6 @@ export default function EditCompany() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-              <Form.Control.Feedback type="invalid">
-                Please enter location.
-              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -134,10 +85,9 @@ export default function EditCompany() {
                 label="B2B"
                 required
                 value="B2B"
-                // name="formHorizontalRadios"
                 id="formHorizontalRadios1"
                 className="radio-btn"
-                checked={compType === 'B2B'}
+                checked={compType === "B2B"}
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Check
@@ -145,16 +95,12 @@ export default function EditCompany() {
                 required
                 type="radio"
                 label="B2C"
-                // name="formHorizontalRadios"
                 id="formHorizontalRadios2"
                 className="radio-btn"
                 value="B2C"
-                checked={compType === 'B2C'}
+                checked={compType === "B2C"}
                 onChange={(e) => setCompType(e.target.value)}
               />
-              <Form.Control.Feedback type="invalid">
-                Please select Company type.
-              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
               <Form.Label
@@ -172,41 +118,29 @@ export default function EditCompany() {
                 onChange={(e) => setIndustry(e.target.value)}
                 required
               />
-              <Form.Control.Feedback type="invalid">
-                Please enter industry.
-              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
               <Form.Label className="col-sm-2 col-form-label">
                 Select Stage
-                <select
-                  // placeholder='select stage'
-                  value={stage}
-                  className="form-select"
-                  onChange={(e) => setStage(e.target.value)}
-                >
-                  <option value="Active">Active</option>
-
-                  <option value="Inactive">Inactive</option>
-                </select>
               </Form.Label>
+              <select
+                value={stage}
+                className="form-select"
+                onChange={(e) => setStage(e.target.value)}
+              >
+                <option value="Active">Active</option>
+
+                <option value="Inactive">Inactive</option>
+              </select>
             </Form.Group>
 
             <button className="btn btn-primary" type="submit">
-              save
+              {btnText}
             </button>
           </Form>
         </div>
       </div>
-
-      <Modal show={show}>
-    <Modal.Body>
-        <p>company with this name already exits</p>
-        <button onClick={handleClose}>ok</button>
-    </Modal.Body>
-   
-</Modal>
     </>
   );
 }

@@ -274,7 +274,7 @@ const csvData=[
                       variant="contained"
                       color="error"
                       size="small"
-                      id={company.id}
+                      // id={company.id}
                       onClick={()=>{
                         setMod('edit')
                         setId(company)
@@ -285,6 +285,22 @@ const csvData=[
                     >
                       edit
                       {/* Delete */}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      id={company.id}
+                      // onClick={()=>{
+                      //   setMod('edit')
+                      //   setId(company)
+                      //   handleShow()
+                      // }}
+                      //  data-toggle="modal"
+                      onClick={(e) => deleteCompany(e)}
+                    >
+                      {/* edit */}
+                      Delete
                     </Button>
                   </TableCell>
                 </TableRow>
