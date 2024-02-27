@@ -18,13 +18,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
-
-// import Table from /component/Table/Table;
 import BasicTable from './Table/Table';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Avatar, Tooltip } from '@mui/material';
+import Dashboard from './Dashboard/Dashboard';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -101,6 +98,7 @@ export default function MiniDrawer() {
     const theme = useTheme();
     const navigate = useNavigate()
     const [open, setOpen] = React.useState(false);
+    const [flag,setFlag]=React.useState("table")
 
     const name = JSON.parse(localStorage.getItem("user"))[0].name
 
@@ -145,10 +143,6 @@ export default function MiniDrawer() {
                         <MenuIcon />
                     </IconButton>
                     <Box sx={{ justifyContent: 'space-between', flexDirection: 'row', display: 'flex', width: '100%' }} >
-                        {/* <Typography variant="h6" noWrap component="div">
-                            Mini variant drawer
-                        </Typography> */}
-
                         <img src='..\logo-dark_257ecddf.svg'>
                         </img>
 
@@ -168,7 +162,7 @@ export default function MiniDrawer() {
                 <Divider />
 
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setFlag("table")}}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -193,7 +187,7 @@ export default function MiniDrawer() {
 
                     
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={handleAnalytics}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setFlag("dash");}}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -238,8 +232,7 @@ export default function MiniDrawer() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                {/* <CustomizedTables /> */}
-                <BasicTable />
+                {flag==="dash"? <Dashboard/>:<BasicTable/>}
             </Box>
         </Box>
     );

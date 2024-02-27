@@ -1,0 +1,5 @@
+.charts{
+    display: flex;
+    justify-content: left;
+    /* grid-template-rows: auto auto; */
+}

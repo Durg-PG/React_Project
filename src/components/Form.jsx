@@ -1,52 +1,48 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { CompanyContext } from "./Context/CompanyContext";
+import { CompanyContext, editContext } from "./Context/CompanyContext";
 import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
-import { useNavigate } from "react-router-dom";
 import "../components/style.css";
+import { Modal } from "react-bootstrap";
 
-export default function AddCompany() {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [compType, setCompType] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [stage, setStage] = useState("Active");
+export default function Form1({
+  onSubmit,
+  initialValues,
+  buttonText,
+  companyNames,
+}) {
+  const [editid, setId] = useContext(editContext);
+  const [name, setName] = useState(initialValues.name);
+  const [location, setLocation] = useState(initialValues.location);
+  const [compType, setCompType] = useState(initialValues.compType);
+  const [industry, setIndustry] = useState(initialValues.industry);
+  const [stage, setStage] = useState(initialValues.stage || "Active");
 
   const [company, setCompany] = useContext(CompanyContext);
-  console.log(company);
+  console.log("names", companyNames);
+  const [show, setShow] = useState(false);
 
-  const navigate = useNavigate();
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
   const [validated, setValidated] = useState(false);
-  var companyNames = [];
-  company.map((company) => {
-    companyNames.push(company.name.toLowerCase());
-  });
-  const addCompany = (e) => {
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const form = e.currentTarget;
-    // console.log(form.checkValidity());
-    // console.log({ validated });
 
     if (form.checkValidity() == true) {
       if (companyNames.includes(name.toLowerCase())) {
-        alert("company is already existing");
-        navigate("/dashboard");
+        handleShow();
       } else {
-        const newComp = [
-          ...company,
-          {
-            id: company[company.length - 1].id + 1,
-            name: name,
-            location,
-            compType,
-            industry,
-            stage,
-          },
-        ];
-        // console.log(newComp);
-        // setComp(newComp)
-        setCompany(newComp);
-        navigate("/dashboard");
+        onSubmit({
+          id: editid.id || uuidv4,
+          name: name,
+          location: location,
+          compType: compType,
+          industry: industry,
+          stage: stage,
+        });
       }
     } else {
       e.preventDefault();
@@ -62,17 +58,15 @@ export default function AddCompany() {
   return (
     <>
       <div className="newcomp-form">
-        <h2>New Company</h2>
+        {/* <h2>New Company</h2> */}
         <div className="form-innerdiv">
           <Form
             className="compForm"
             autoComplete="off"
             noValidate
             validated={validated}
-            onSubmit={addCompany}
+            onSubmit={handleSubmit}
           >
-            {/* <Form autoComplete="off" noValidate validated={validated} inSubmit={handleSubmit}> */}
-
             <Form.Group>
               <Form.Label htmlFor="name" className="col-sm-2 col-form-label">
                 Company Name
@@ -84,10 +78,9 @@ export default function AddCompany() {
                 placeholder="eg. Raytheon technologies"
                 onChange={(e) => setName(e.target.value)}
                 id="name"
-                // value={name}
+                value={name}
                 required
               />
-
               <Form.Control.Feedback type="invalid">
                 Please enter company name.
               </Form.Control.Feedback>
@@ -103,6 +96,7 @@ export default function AddCompany() {
                 className="form-control"
                 placeholder="eg. Boston"
                 required
+                value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <Form.Control.Feedback type="invalid">
@@ -110,21 +104,20 @@ export default function AddCompany() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            {/* <label for='type'>company type</label> */}
             <Form.Group>
               <Form.Label className="col-sm-2 col-form-label">
                 Company Type
               </Form.Label>
-              {/* <Col> */}
               <Form.Check
                 inline
                 type="radio"
                 label="B2B"
                 required
                 value="B2B"
-                name="formHorizontalRadios"
                 id="formHorizontalRadios1"
                 className="radio-btn"
+                checked={compType === "B2B"}
+                                name="formHorizontalRadios"
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Check
@@ -132,16 +125,16 @@ export default function AddCompany() {
                 required
                 type="radio"
                 label="B2C"
-                name="formHorizontalRadios"
                 id="formHorizontalRadios2"
+                                name="formHorizontalRadios"
                 className="radio-btn"
                 value="B2C"
+                checked={compType === "B2C"}
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Control.Feedback type="invalid">
                 Please select Company type.
               </Form.Control.Feedback>
-              {/* </Col> */}
             </Form.Group>
             <Form.Group>
               <Form.Label
@@ -155,6 +148,7 @@ export default function AddCompany() {
                 id="industry"
                 className="form-control"
                 placeholder="eg. software"
+                value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
                 required
               />
@@ -163,31 +157,34 @@ export default function AddCompany() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            {/* <input type='text' placeholder='enter stage' onChange={(e)=>setStage(e.target.value)}/> */}
             <Form.Group>
               <Form.Label className="col-sm-2 col-form-label">
                 Select Stage
-                <select
-                  // placeholder='select stage'
-                  value={stage}
-                  className="form-select"
-                  onChange={(e) => setStage(e.target.value)}
-                >
-                  {/* <option disabled>Select Stage</option> */}
-                  <option value="Active">Active</option>
-
-                  <option value="Inactive">Inactive</option>
-                </select>
               </Form.Label>
-              {/* <button className="btn btn-primary" type="submit" onClick={addCompany}> */}
+              <select
+                value={stage}
+                className="form-select"
+                onChange={(e) => setStage(e.target.value)}
+              >
+                <option value="Active">Active</option>
+
+                <option value="Inactive">Inactive</option>
+              </select>
             </Form.Group>
 
             <button className="btn btn-primary" type="submit">
-              Add
+              {buttonText}
             </button>
           </Form>
         </div>
       </div>
+
+      <Modal show={show}>
+        <Modal.Body>
+          <p>company with this name already exits</p>
+          <button onClick={handleClose}>ok</button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
