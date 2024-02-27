@@ -75,11 +75,11 @@ const Home = () => {
     }
 
     return (
-        <>
+    <>
             <div className="container mt-3">
                 <section className='d-flex justify-content-between'>
                     <div className="left_data mt-93 p-3" style={{ width: "100%" }}>
-                    <h2 className='text-center col-lg-6' style={{color:"#5C85FA"}}>Welcome Here!</h2>
+                    <h2 className='text-center col-lg-6 mt-5 ' style={{color:"#5C85FA"}}>Welcome Here!</h2>
                     <h6 style={{color:"#5C8599"}}>Sign Up to our portal for more details</h6>
                     <h3 className='text-center col-lg-6' style={{color:"rgb(67, 185, 127)"}}>Sign Up</h3>
 
@@ -99,7 +99,7 @@ const Home = () => {
 
                                 <Form.Control type="password" name='password' onChange={getdata} placeholder="Password" />
                             </Form.Group>
-                            <Button variant="primary" className='col-lg-6' onClick={addData} style={{ background: "#253053" }} type="submit">
+                            <Button variant="primary" className='col-lg-6' onClick={addData} style={{ background: "#0F1035" }} type="submit">
                                 Submit
                             </Button>
                         </Form>

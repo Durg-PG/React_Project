@@ -4,8 +4,7 @@ import { CompanyContext } from "./Context/CompanyContext";
 import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-import "../components/style.css"
-
+import "../components/style.css";
 
 export default function AddCompany() {
   const [name, setName] = useState("");
@@ -19,28 +18,36 @@ export default function AddCompany() {
 
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
-
+  var companyNames = [];
+  company.map((company) => {
+    companyNames.push(company.name.toLowerCase());
+  });
   const addCompany = (e) => {
-    // e.preventDefault();
     const form = e.currentTarget;
     // console.log(form.checkValidity());
     // console.log({ validated });
 
     if (form.checkValidity() == true) {
-      const newCompany = [
-        ...company,
-        {
-          id: uuidv4(),
-          name: name,
-          location: location,
-          compType: compType,
-          industry: industry,
-          stage: stage,
-        },
-      ];
-
-      setCompany(newCompany);
-      navigate("/dashboard");
+      if (companyNames.includes(name.toLowerCase())) {
+        alert("company is already existing");
+        navigate("/dashboard");
+      } else {
+        const newComp = [
+          ...company,
+          {
+            id: company[company.length - 1].id + 1,
+            name: name,
+            location,
+            compType,
+            industry,
+            stage,
+          },
+        ];
+        // console.log(newComp);
+        // setComp(newComp)
+        setCompany(newComp);
+        navigate("/dashboard");
+      }
     } else {
       e.preventDefault();
       e.stopPropagation();

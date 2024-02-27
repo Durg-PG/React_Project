@@ -18,6 +18,7 @@ function App() {
       <Route path='/login' element={<Login />} />
       <Route path='/dashboard' element={<Dashboard />} />
       <Route path='/add' element={<AddCompany />} />
+      {/* <Route path='/analytics' element={<Login />} /> */}
       
       <Route path='*' element={<Errror />} />
 
