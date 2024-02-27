@@ -216,7 +216,7 @@ export default function BasicTable() {
                 onClick={getSelectedRows}
                 variant="contained"
                 size="medium"
-                className="add-btn"
+                className="csv-btn"
               >
                 <DownloadIcon></DownloadIcon>
               </Button>
@@ -288,7 +288,7 @@ export default function BasicTable() {
                     >
                       <TableCell align="left">
                         <Checkbox
-                          id="rowcheck{company.id}"
+                          id="{company.id}"
                           checked={company.selected}
                           onChange={(e) => onItemCheck(e, company)}
                         />
