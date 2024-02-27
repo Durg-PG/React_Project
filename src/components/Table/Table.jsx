@@ -31,6 +31,9 @@ import { Modal } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 import AddCompany from "../AddCompany";
 import EditCompany from "../EditCompany";
+import Form1 from "../form"
+import AddForm from "../AddForm";
+import EditForm from "../EditForm";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -288,7 +291,7 @@ export default function BasicTable() {
                     >
                       <TableCell align="left">
                         <Checkbox
-                          id="rowcheck{company.id}"
+                          id={company.id}
                           checked={company.selected}
                           onChange={(e) => onItemCheck(e, company)}
                         />
@@ -319,10 +322,8 @@ export default function BasicTable() {
                             handleShow();
                           }}
                           data-toggle="modal"
-                          // onClick={(e) => deleteCompany(e)}
                         >
                           Edit
-                          {/* Delete */}
                         </Button>
                         <Button
                           variant="contained"
@@ -355,20 +356,16 @@ export default function BasicTable() {
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          {/* <Modal.Title>
-            ADD
-        </Modal.Title> */}
         </Modal.Header>
         <Modal.Body>
           {/* <AddCompany /> */}
-          {mod === "add" ? <AddCompany /> : ""}
-          {mod === "edit" ? <EditCompany /> : ""}
+          {/* {mod === "add" ? <AddCompany /> : ""} */}
+          {/* {mod === "edit" ? <EditCompany /> : ""} */}
+        
+          {mod === "add" ? <AddForm/> : ""}
+          {mod === "edit" ? <EditForm/> : ""}
         </Modal.Body>
-        {/* <Modal.Footer>
-             <Button variant="secondary" onClick={handleClose}>
-                Close Button
-            </Button> 
-    </Modal.Footer> */}
+       
       </Modal>
     </>
   );

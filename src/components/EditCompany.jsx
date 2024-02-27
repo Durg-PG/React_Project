@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
 import "../components/style.css"
 import { Modal } from "react-bootstrap";
+// import ModalDialog from "./modalDialog";
 
 export default function EditCompany() {
    const[editid,setId] =  useContext(editContext)
@@ -25,7 +26,9 @@ export default function EditCompany() {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   
-  
+  // const [showModal, setShowModal] = useState(false);
+  // const handleshowModal = () => setShowModal(true);
+  // const handleCloseModal = () => setShowModal(false);
 
   var companyNames = [];
   company.map((comp) => {
@@ -207,6 +210,14 @@ export default function EditCompany() {
     </Modal.Body>
    
 </Modal>
+
+       {/* <ModalDialog show={showModal} onClose={handleCloseModal}>
+    <Modal.Body>
+        <p>company with this name already exits</p>
+        <button onClick={handleCloseModal}>ok</button>
+    </Modal.Body>
+   
+</ModalDialog> */}
     </>
   );
 }

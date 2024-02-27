@@ -6,31 +6,54 @@ import Form from "react-bootstrap/Form";
 import "../components/style.css";
 import { Modal } from "react-bootstrap";
 
-export default function EditCompany() {
+export default function Form1({
+  onSubmit,
+  initialValues,
+  buttonText,
+  companyNames,
+}) {
   const [editid, setId] = useContext(editContext);
-  const [name, setName] = useState(editid.name);
-  const [location, setLocation] = useState(editid.location);
-  const [compType, setCompType] = useState(editid.compType);
-  const [industry, setIndustry] = useState(editid.industry);
-  const [stage, setStage] = useState(editid.stage);
+  const [name, setName] = useState(initialValues.name);
+  const [location, setLocation] = useState(initialValues.location);
+  const [compType, setCompType] = useState(initialValues.compType);
+  const [industry, setIndustry] = useState(initialValues.industry);
+  const [stage, setStage] = useState(initialValues.stage || "Active");
 
   const [company, setCompany] = useContext(CompanyContext);
+  console.log("names", companyNames);
+  const [show, setShow] = useState(false);
 
-  const handleSub = (e) => {
-    const data = company.map((item) =>
-      item.id === editid.id
-        ? {
-            id: editid.id,
-            name: name,
-            location: location,
-            compType: compType,
-            industry: industry,
-            stage: stage,
-          }
-        : item
-    );
-    setCompany(data);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    if (form.checkValidity() == true) {
+      if (companyNames.includes(name.toLowerCase())) {
+        handleShow();
+      } else {
+        onSubmit({
+          id: editid.id || uuidv4,
+          name: name,
+          location: location,
+          compType: compType,
+          industry: industry,
+          stage: stage,
+        });
+      }
+    } else {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setValidated(true);
   };
+
+  useEffect(() => {
+    localStorage.setItem("company", JSON.stringify(company));
+  }, [company]);
 
   return (
     <>
@@ -42,7 +65,7 @@ export default function EditCompany() {
             autoComplete="off"
             noValidate
             validated={validated}
-            onSubmit={handleSub}
+            onSubmit={handleSubmit}
           >
             <Form.Group>
               <Form.Label htmlFor="name" className="col-sm-2 col-form-label">
@@ -58,6 +81,9 @@ export default function EditCompany() {
                 value={name}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter company name.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -73,6 +99,9 @@ export default function EditCompany() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter location.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -88,6 +117,7 @@ export default function EditCompany() {
                 id="formHorizontalRadios1"
                 className="radio-btn"
                 checked={compType === "B2B"}
+                                name="formHorizontalRadios"
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Check
@@ -96,11 +126,15 @@ export default function EditCompany() {
                 type="radio"
                 label="B2C"
                 id="formHorizontalRadios2"
+                                name="formHorizontalRadios"
                 className="radio-btn"
                 value="B2C"
                 checked={compType === "B2C"}
                 onChange={(e) => setCompType(e.target.value)}
               />
+              <Form.Control.Feedback type="invalid">
+                Please select Company type.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
               <Form.Label
@@ -118,6 +152,9 @@ export default function EditCompany() {
                 onChange={(e) => setIndustry(e.target.value)}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter industry.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -136,11 +173,18 @@ export default function EditCompany() {
             </Form.Group>
 
             <button className="btn btn-primary" type="submit">
-              {btnText}
+              {buttonText}
             </button>
           </Form>
         </div>
       </div>
+
+      <Modal show={show}>
+        <Modal.Body>
+          <p>company with this name already exits</p>
+          <button onClick={handleClose}>ok</button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
