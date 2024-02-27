@@ -8,6 +8,7 @@ const PieChart = (props) => {
           // subtext: 'Fake Data',
           left: 'center'
         },
+        color:["#365486",'#7FC7D9'],
         tooltip: {
           trigger: 'item'
         },
@@ -37,7 +38,7 @@ const PieChart = (props) => {
         ]
       };
   return (
-    <ReactECharts option={option} style={{ height: "80vh", left: 50, top: 50, width: "50%" }} />
+    <ReactECharts option={option} style={{ height: "80vh", left: 50, top: 50, width: "50%", }} />
   )
 }
 

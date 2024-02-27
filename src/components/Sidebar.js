@@ -16,22 +16,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
-// import Table from /component/Table/Table;
+import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import BasicTable from './Table/Table';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Avatar, Tooltip } from '@mui/material';
 import Dashboard from './Dashboard/Dashboard';
-
-
-
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
-    backgroundColor: "#253053",
+    backgroundColor: "#0F1035", // for Side Bar
     color: "white",
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -65,7 +60,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
-    backgroundColor: "#253053",
+    backgroundColor: "#0F1035", //for app bar
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -121,6 +116,12 @@ export default function MiniDrawer() {
         console.log("logging out")
         localStorage.removeItem("user")
         navigate("/")
+    }
+
+    const handleAnalytics = () => {
+        console.log("Redirecting Analytics")
+        // localStorage.removeItem("user")
+        navigate("/analytics")
 
     }
 
@@ -142,10 +143,6 @@ export default function MiniDrawer() {
                         <MenuIcon />
                     </IconButton>
                     <Box sx={{ justifyContent: 'space-between', flexDirection: 'row', display: 'flex', width: '100%' }} >
-                        {/* <Typography variant="h6" noWrap component="div">
-                            Mini variant drawer
-                        </Typography> */}
-
                         <img src='..\logo-dark_257ecddf.svg'>
                         </img>
 
@@ -158,16 +155,14 @@ export default function MiniDrawer() {
 
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={handleDrawerClose} sx={{color:'white'}}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
 
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{
-                        setFlag("dash");
-                    }}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setFlag("table")}}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -182,35 +177,35 @@ export default function MiniDrawer() {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <DashboardIcon sx={{ color: open ? "white" : "#253053" }} />
+                                <BusinessOutlinedIcon sx={{ color: open ? "white" : "#253053" }} />
 
-                            </ListItemIcon>
-                            <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{
-                        setFlag("table");
-                    }}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {/* {index === 0 && <DashboardIcon sx={{ color: open ? "white" : "#253053" }} />} */}
-                                <SearchIcon sx={{ color: open ? "white" : "#253053" }} />
-                                {/* {index === 2 && <LogoutIcon  sx={{ color: open ? "white" : "#253053" }} />} */}
                             </ListItemIcon>
                             <ListItemText primary="Companies" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    
+
+                    
+
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setFlag("dash");}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <AnalyticsOutlinedIcon sx={{ color: open ? "white" : "#253053" }} />
+
+                            </ListItemIcon>
+                            <ListItemText primary="Analytics" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
 
@@ -237,12 +232,7 @@ export default function MiniDrawer() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                {/* <CustomizedTables /> */}
-                {/* <BasicTable /> */}
                 {flag==="dash"? <Dashboard/>:<BasicTable/>}
-
-                
-                {/* <Dashboard/> */}
             </Box>
         </Box>
     );

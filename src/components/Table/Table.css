@@ -1,21 +1,67 @@
-.MuiTableRow-root>*{
-    padding: 5px;
+.MuiTableRow-root > * {
+  padding: 5px;
 }
 
-.MuiTableRow-root.MuiTableRow-head>*{
-    font-weight: bold !important;
+.MuiTableRow-root.MuiTableRow-head > * {
+  font-weight: bold !important;
 }
 
-/* .Table td, th{
-    margin-bottom: 50rem;
-} */
 
-/* .Table:first-child{
-    border-radius: 0.7rem !important;
-} */
+
+.stage {
+  /* background-color: #FA8072; */
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-left: 0;
+  color: white;
+}
+
+.actions {
+  margin-right: 0;
+  align-items: left;
+  float: left;
+}
+
+.headerRow {
+  display: inline-flex;
+  /* float: left; */
+  gap: 40px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+
+.rightbtn {
+  margin-left: 500px;
+}
+
+
+
+.pagination {
+  align-items: start;
+}
+@media screen and (max-width: 1200px) {
+  .Table {
+    margin-top: 2rem;
+  }
+}
+
+.modal-content {
+  margin-top: 70px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-dialog {
+  max-width: 800px;
+  margin: 1.75rem auto;
+  padding-left: 65px;
+}
+
 
 .stage{
-    /* background-color: #FA8072; */
     padding:  10px 20px;
     border-radius: 5px ; 
     margin-left: 0;
@@ -42,17 +88,16 @@
     gap : 95px
 }
 
-.add-btn{
-    margin-top: 10rem;
-}
 
-.pagination{
-    align-items: start;
-}
 @media screen and (max-width: 1200px){
     .Table{
         margin-top: 2rem;
     }
+} */
+
+.add-btn{
+    height: 42px;
+    width: 80px;
 }
 
 .modal-content{

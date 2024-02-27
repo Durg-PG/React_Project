@@ -7,10 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./Table.css";
-import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import { Filter } from "../../Data/Data";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/esm/Col";
@@ -20,17 +18,16 @@ import Checkbox from "@mui/material/Checkbox";
 import { CompanyContext, editContext } from "../Context/CompanyContext";
 import { useContext } from "react";
 import { useEffect } from "react";
-// import '../../style.css'
 import "../style.css";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import TablePagination from "@mui/material/TablePagination";
-import { TableFooter, capitalize } from "@mui/material";
+import { TableFooter } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
 import { Modal } from "react-bootstrap";
 import { CSVLink } from "react-csv";
-import AddCompany from "../AddCompany";
-import EditCompany from "../EditCompany";
+import AddForm from "../AddForm";
+import EditForm from "../EditForm";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -91,6 +88,7 @@ export default function BasicTable() {
   useEffect(() => {
     localStorage.setItem("company", JSON.stringify(company));
     handleClose();
+    handleClose();
   }, [company]);
 
   const onItemCheck = (e, comp) => {
@@ -124,7 +122,6 @@ export default function BasicTable() {
     setSelectedCompanies(company.filter((e) => e.selected));
   };
   const csvData = [
-    // getSelectedRows()
     ["Id", "Company Name", "Location", "Company Type", "Industry", "Stage"],
     selectedCompanies.map(
       ({ id, name, location, compType, industry, stage }) => [
@@ -148,9 +145,6 @@ export default function BasicTable() {
             <Form.Group as={Col}>
               <InputGroup>
                 <InputGroup.Text
-                // onClick={() => {
-                //   console.log(search);
-                // }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -166,84 +160,85 @@ export default function BasicTable() {
                 <Form.Control
                   type="text"
                   className="form-control "
-                  placeholder="Type Company Name...."
+                  placeholder="Search Company Name...."
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </InputGroup>
             </Form.Group>
           </div>
-          <div className="Filter-add d-flex justify-content-between align-items-center">
-            <Dropdown>
-              <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
-                <FilterAltIcon></FilterAltIcon>
-                {filteredComp}
-              </Dropdown.Toggle>
+          <Dropdown fontSize="small">
+            <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
+              <FilterAltIcon fontSize="small"></FilterAltIcon>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  onClick={() => {
-                    setFlag("true");
-                    setFilteredComp("Active");
-                  }}
-                >
-                  Active
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => {
-                    setFlag("true");
-                    setFilteredComp("Inactive");
-                  }}
-                >
-                  Inactive
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => {
-                    setFlag("false");
-                    setFilteredComp("");
-                  }}
-                >
-                  All
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+              {filteredComp}
+            </Dropdown.Toggle>
 
+            <Dropdown.Menu>
+              <Dropdown.Item
+                onClick={() => {
+                  setFlag("true");
+                  setFilteredComp("Active");
+                }}
+              >
+                Active
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  setFlag("true");
+                  setFilteredComp("Inactive");
+                }}
+              >
+                Inactive
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  setFlag("false");
+                  setFilteredComp("");
+                }}
+              >
+                All
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <div class="rightbtn">
             <CSVLink
               filename="Company List.csv"
               data={csvData}
               className="downloadbtn"
+            
             >
-              <Button
-                onClick={getSelectedRows}
-                variant="contained"
-                size="medium"
-                className="csv-btn"
-              >
-                <DownloadIcon></DownloadIcon>
+              <Button variant="contained" size="small" className="add-btn" sx={{background:"#19376D"}}>
+                <DownloadIcon />
               </Button>
             </CSVLink>
-            <Button
-              variant="contained"
-              size="medium"
-              className="add-btn"
-              onClick={() => {
-                setMod("add");
-                handleShow();
-              }}
-              data-toggle="modal"
-            >
-              <AddIcon />
-            </Button>
-
-            {/* <Link to="/add"> 
-          <Button variant="contained"  size="medium" className="add-btn"><AddIcon></AddIcon></Button>
-         </Link> */}
           </div>
+          <Button
+            variant="contained"
+            size="small"
+            className="add-btn"
+            onClick={() => {
+              setMod("add");
+              handleShow();
+            }}
+            data-toggle="modal"
+            sx={{background:"#19376D"}}
+          >
+            <AddIcon />
+          </Button>
+
+          
         </div>
         <TableContainer
           component={Paper}
           style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
         >
-          <Table sx={{ minWidth: 300 }} aria-label="simple table">
+          <Table
+            sx={{
+              minWidth: 300,
+              
+            }}
+            aria-label="simple table"
+          >
             <TableHead>
               <TableRow>
                 <TableCell align="left">
@@ -263,7 +258,6 @@ export default function BasicTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {rows.map((row) => ( */}
               {company &&
                 company
                   .filter((company) => {
@@ -309,8 +303,7 @@ export default function BasicTable() {
                       </TableCell>
                       <TableCell align="left" className="action">
                         <Button
-                          variant="contained"
-                          // color="error"
+                          variant="outlined"
                           size="small"
                           id={company.id}
                           onClick={() => {
@@ -319,17 +312,17 @@ export default function BasicTable() {
                             handleShow();
                           }}
                           data-toggle="modal"
-                          // onClick={(e) => deleteCompany(e)}
                         >
                           Edit
-                          {/* Delete */}
                         </Button>
                         <Button
+                          className="deletebtn"
                           variant="contained"
                           color="error"
                           size="small"
                           id={company.id}
                           onClick={(e) => deleteCompany(e)}
+                          sx={{ marginLeft: "20px" }}
                         >
                           Delete
                         </Button>
@@ -354,22 +347,13 @@ export default function BasicTable() {
         </TableContainer>
       </div>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          {/* <Modal.Title>
-            ADD
-        </Modal.Title> */}
-        </Modal.Header>
+        <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
-          {/* <AddCompany /> */}
-          {mod === "add" ? <AddCompany /> : ""}
-          {mod === "edit" ? <EditCompany /> : ""}
+          {mod === "add" ? <AddForm /> : ""}
+          {mod === "edit" ? <EditForm /> : ""}
         </Modal.Body>
-        {/* <Modal.Footer>
-             <Button variant="secondary" onClick={handleClose}>
-                Close Button
-            </Button> 
-    </Modal.Footer> */}
       </Modal>
     </>
   );
 }
+
