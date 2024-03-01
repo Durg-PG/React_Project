@@ -1,7 +1,6 @@
 .charts{
     display: flex;
     justify-content: left;
-    /* grid-template-rows: auto auto; */
 }
 .dashH1 h2{
     margin-bottom: 0;

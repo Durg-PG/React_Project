@@ -22,10 +22,8 @@ import "../style.css";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import TablePagination from "@mui/material/TablePagination";
 import { TableFooter, Tooltip } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
 import { Modal, Stack } from "react-bootstrap";
-import { CSVLink } from "react-csv";
 import AddForm from "../AddForm";
 import EditForm from "../EditForm";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,11 +50,8 @@ export default function BasicTable() {
   const [company, setCompany] = useContext(CompanyContext);
   const [filteredComp, setFilteredComp] = useState("");
   const [flag, setFlag] = useState("false");
-
-  // const [rows, setRows] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   const [MasterChecked, setMasterChecked] = useState(false);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [show, setShow] = useState(false);
@@ -100,8 +95,6 @@ export default function BasicTable() {
     localStorage.setItem("company", JSON.stringify(company));
     handleClose();
     getSelectedRows()
-// console.log(selectedCompanies)
-    // console.log(company)
     setMasterChecked(selectedCompanies.length === company.length)    
   }, [company]);
  
@@ -114,7 +107,6 @@ export default function BasicTable() {
 const onItemCheck = (e,comp) => {
     comp.selected = e.target.checked;
     getSelectedRows()
-    // setMasterChecked(selectedCompanies.length === company.length)    
   }    
  
  
@@ -126,42 +118,6 @@ const onItemCheck = (e,comp) => {
   const getSelectedRows = () => {
     setSelectedCompanies(company.filter((e) => e.selected));
   }
-
-  // useEffect(() => {
-  //   localStorage.setItem("company", JSON.stringify(company));
-  //   handleClose();
-  // }, [company]);
-
-  // const onItemCheck = (e, comp) => {
-  //   let tempList = company;
-  //   // console.log(tempList)
-  //   tempList.map((tempcompany) => {
-  //     // console.log(tempcompany)
-  //     if (tempcompany.id === comp.id) {
-  //       tempcompany.selected = e.target.checked;
-  //     }
-  //     return tempcompany;
-  //   });
-  //   const totalItems = company.length;
-  //   const totalCheckedItems = tempList.filter((e) => e.selected).length;
-  //   // Update State
-  //   setMasterChecked(totalItems === totalCheckedItems);
-  //   setSelectedCompanies(company.filter((e) => e.selected));
-  // };
-
-  // const onMasterCheck = (e) => {
-  //   let tempList = company;
-  //   // Check/ UnCheck All Items
-  //   tempList.map((company) => (company.selected = e.target.checked));
-
-  //   //Update State
-  //   setSelectedCompanies(company.filter((e) => e.selected));
-  //   setMasterChecked(e.target.checked);
-  // };
-
-  // const getSelectedRows = () => {
-  //   setSelectedCompanies(company.filter((e) => e.selected));
-  // };
   const csvData = [
     ["Id", "Company Name", "Location", "Company Type", "Industry", "Stage"],
     selectedCompanies.map(
@@ -244,20 +200,6 @@ const onItemCheck = (e,comp) => {
           </div>
           <div className="right">
             {selectedCompanies.length!==0?<CSV selectedCompanies={selectedCompanies}/>:""}
-              {/* <CSVLink
-                filename="Company List.csv"
-                data={csvData}
-                className="downloadbtn"
-              >
-                <Button
-                  variant="contained"
-                  size="small"
-                  className="add-btn"
-                  sx={{ background: "#19376D" }}
-                >
-                  <DownloadIcon />
-                </Button>
-              </CSVLink> */}
             <Button
               variant="contained"
               size="small"
@@ -339,7 +281,6 @@ const onItemCheck = (e,comp) => {
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
-                          // ':hover': {overflow: "visible", whiteSpace: "normal", height: "auto"}
                         }}
                       >
                         <Tooltip title={company.name} placement="bottom-start">
@@ -353,7 +294,6 @@ const onItemCheck = (e,comp) => {
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
-                          // ':hover': {overflow: "visible", whiteSpace: "normal", height: "auto"}
                         }}
                       >
                         <Tooltip
