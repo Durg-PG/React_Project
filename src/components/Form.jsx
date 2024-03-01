@@ -5,6 +5,9 @@ import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
 import "../components/style.css";
 import { Modal } from "react-bootstrap";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+
 
 export default function Form1({
   onSubmit,
@@ -18,12 +21,16 @@ export default function Form1({
   const [compType, setCompType] = useState(initialValues.compType);
   const [industry, setIndustry] = useState(initialValues.industry);
   const [stage, setStage] = useState(initialValues.stage || "Active");
-
+  const [selected, setSelected] = useState("");
   const [company, setCompany] = useContext(CompanyContext);
   console.log("names", companyNames);
   const [show, setShow] = useState(false);
 
-  const handleShow = () => setShow(true);
+  const handleShow = () => {setShow(true);
+    toast.error("Company Already Exists !!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  };
   const handleClose = () => setShow(false);
   const [validated, setValidated] = useState(false);
 
@@ -42,6 +49,7 @@ export default function Form1({
           compType: compType,
           industry: industry,
           stage: stage,
+          selected:selected,
         });
       }
     } else {
@@ -60,7 +68,6 @@ export default function Form1({
       <div className="newcomp-form">
         {/* <h2>New Company</h2> */}
         <div className="form-innerdiv">
-          
           <Form
             className="compForm"
             autoComplete="off"
@@ -180,12 +187,12 @@ export default function Form1({
         </div>
       </div>
 
-      <Modal show={show}>
-        <Modal.Body>
+      {/*<Modal show={show}>
+         <Modal.Body>
           <p>company with this name already exits</p>
           <button onClick={handleClose}>ok</button>
-        </Modal.Body>
-      </Modal>
+        </Modal.Body> 
+      </Modal>*/}
     </>
   );
 }

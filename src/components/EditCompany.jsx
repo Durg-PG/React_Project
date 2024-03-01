@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import "../components/style.css"
 import { Modal } from "react-bootstrap";
 
+
 export default function EditCompany() {
    const[editid,setId] =  useContext(editContext)
   const [name, setName] = useState(editid.name);
@@ -67,6 +68,7 @@ export default function EditCompany() {
     }
     setValidated(true);
   };
+
 
   useEffect(() => {
     localStorage.setItem("company", JSON.stringify(company));
@@ -193,9 +195,10 @@ export default function EditCompany() {
               </Form.Label>
             </Form.Group>
 
-            <button className="btn btn-primary" type="submit">
+            <button className="btn btn-primary" type="submit" >
               save
             </button>
+
           </Form>
         </div>
       </div>

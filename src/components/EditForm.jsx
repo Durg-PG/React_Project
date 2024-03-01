@@ -2,6 +2,10 @@ import React from "react";
 import Form1 from "./Form";
 import { CompanyContext, editContext } from "./Context/CompanyContext";
 import { useContext } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+
+
 export default function EditForm() {
   const [editid, setId] = useContext(editContext);
   const [company, setCompany] = useContext(CompanyContext);
@@ -29,16 +33,21 @@ export default function EditForm() {
             compType: formData.compType,
             industry: formData.industry,
             stage: formData.stage,
+            selected:formData.selected,
           }
         : item
     );
     setCompany(editdata);
+          toast.success("Company Edited Successfully !", {
+            position: toast.POSITION.TOP_CENTER,
+          });
     // setId("");
   };
 
   return (
     <>
       <Form1 initialValues={editid} buttonText="Save" onSubmit={onSubmit} companyNames={companyNames}/>
+      <ToastContainer  />
    
     </>
   );

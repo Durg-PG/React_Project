@@ -21,13 +21,16 @@ import { useEffect } from "react";
 import "../style.css";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import TablePagination from "@mui/material/TablePagination";
-import { TableFooter } from "@mui/material";
+import { TableFooter, Tooltip } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
-import { Modal } from "react-bootstrap";
+import { Modal, Stack } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 import AddForm from "../AddForm";
 import EditForm from "../EditForm";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import CSV from "../csv";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -82,45 +85,83 @@ export default function BasicTable() {
     const filterCompany = company.filter((item) => {
       return item.id !== e.target.id;
     });
+    toast.error("Company Deleted Successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
     setCompany(filterCompany);
   };
 
+
+  useEffect(() => {
+    getSelectedRows()
+  }, []);
+ 
   useEffect(() => {
     localStorage.setItem("company", JSON.stringify(company));
     handleClose();
-    handleClose();
+    getSelectedRows()
+// console.log(selectedCompanies)
+    // console.log(company)
+    setMasterChecked(selectedCompanies.length === company.length)    
   }, [company]);
-
-  const onItemCheck = (e, comp) => {
-    let tempList = company;
-    // console.log(tempList)
-    tempList.map((tempcompany) => {
-      // console.log(tempcompany)
-      if (tempcompany.id === comp.id) {
-        tempcompany.selected = e.target.checked;
-      }
-      return tempcompany;
-    });
-    const totalItems = company.length;
-    const totalCheckedItems = tempList.filter((e) => e.selected).length;
-    // Update State
-    setMasterChecked(totalItems === totalCheckedItems);
-    setSelectedCompanies(company.filter((e) => e.selected));
-  };
-
+ 
+ 
+  useEffect(()=>{
+    setMasterChecked(selectedCompanies.length === company.length)    
+  },[selectedCompanies])
+ 
+ 
+const onItemCheck = (e,comp) => {
+    comp.selected = e.target.checked;
+    getSelectedRows()
+    // setMasterChecked(selectedCompanies.length === company.length)    
+  }    
+ 
+ 
   const onMasterCheck = (e) => {
-    let tempList = company;
-    // Check/ UnCheck All Items
-    tempList.map((company) => (company.selected = e.target.checked));
-
-    //Update State
-    setSelectedCompanies(company.filter((e) => e.selected));
-    setMasterChecked(e.target.checked);
-  };
-
+    company.map((comp) => (comp.selected = e.target.checked));
+    getSelectedRows()
+  }
+ 
   const getSelectedRows = () => {
     setSelectedCompanies(company.filter((e) => e.selected));
-  };
+  }
+
+  // useEffect(() => {
+  //   localStorage.setItem("company", JSON.stringify(company));
+  //   handleClose();
+  // }, [company]);
+
+  // const onItemCheck = (e, comp) => {
+  //   let tempList = company;
+  //   // console.log(tempList)
+  //   tempList.map((tempcompany) => {
+  //     // console.log(tempcompany)
+  //     if (tempcompany.id === comp.id) {
+  //       tempcompany.selected = e.target.checked;
+  //     }
+  //     return tempcompany;
+  //   });
+  //   const totalItems = company.length;
+  //   const totalCheckedItems = tempList.filter((e) => e.selected).length;
+  //   // Update State
+  //   setMasterChecked(totalItems === totalCheckedItems);
+  //   setSelectedCompanies(company.filter((e) => e.selected));
+  // };
+
+  // const onMasterCheck = (e) => {
+  //   let tempList = company;
+  //   // Check/ UnCheck All Items
+  //   tempList.map((company) => (company.selected = e.target.checked));
+
+  //   //Update State
+  //   setSelectedCompanies(company.filter((e) => e.selected));
+  //   setMasterChecked(e.target.checked);
+  // };
+
+  // const getSelectedRows = () => {
+  //   setSelectedCompanies(company.filter((e) => e.selected));
+  // };
   const csvData = [
     ["Id", "Company Name", "Location", "Company Type", "Industry", "Stage"],
     selectedCompanies.map(
@@ -139,94 +180,98 @@ export default function BasicTable() {
     <>
       <div className="Table">
         <div className="headerRow">
-          <h2 style={{ color: "#253053" }}>Companies</h2>
+          <div className="left">
+            <h2 style={{ color: "#253053" }}>Companies</h2>
 
-          <div className="input-searchform">
-            <Form.Group as={Col}>
-              <InputGroup>
-                <InputGroup.Text
+            <div className="input-searchform">
+              <Form.Group as={Col}>
+                <InputGroup>
+                  <InputGroup.Text>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-search"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    className="form-control "
+                    placeholder="Search Company Name...."
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </InputGroup>
+              </Form.Group>
+            </div>
+            <Dropdown fontSize="small">
+              <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
+                <FilterAltIcon fontSize="small"></FilterAltIcon>
+
+                {filteredComp}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => {
+                    setFlag("true");
+                    setFilteredComp("Active");
+                  }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-search"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                  </svg>
-                </InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  className="form-control "
-                  placeholder="Search Company Name...."
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </InputGroup>
-            </Form.Group>
+                  Active
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setFlag("true");
+                    setFilteredComp("Inactive");
+                  }}
+                >
+                  Inactive
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setFlag("false");
+                    setFilteredComp("");
+                  }}
+                >
+                  All
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-          <Dropdown fontSize="small">
-            <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
-              <FilterAltIcon fontSize="small"></FilterAltIcon>
-
-              {filteredComp}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item
-                onClick={() => {
-                  setFlag("true");
-                  setFilteredComp("Active");
-                }}
+          <div className="right">
+            {selectedCompanies.length!==0?<CSV selectedCompanies={selectedCompanies}/>:""}
+              {/* <CSVLink
+                filename="Company List.csv"
+                data={csvData}
+                className="downloadbtn"
               >
-                Active
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  setFlag("true");
-                  setFilteredComp("Inactive");
-                }}
-              >
-                Inactive
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  setFlag("false");
-                  setFilteredComp("");
-                }}
-              >
-                All
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <div class="rightbtn">
-            <CSVLink
-              filename="Company List.csv"
-              data={csvData}
-              className="downloadbtn"
-            
+                <Button
+                  variant="contained"
+                  size="small"
+                  className="add-btn"
+                  sx={{ background: "#19376D" }}
+                >
+                  <DownloadIcon />
+                </Button>
+              </CSVLink> */}
+            <Button
+              variant="contained"
+              size="small"
+              className="add-btn"
+              onClick={() => {
+                setMod("add");
+                handleShow();
+              }}
+              data-toggle="modal"
+              sx={{ background: "#19376D" }}
             >
-              <Button variant="contained" size="small" className="add-btn" sx={{background:"#19376D"}}>
-                <DownloadIcon />
-              </Button>
-            </CSVLink>
+              <AddIcon />
+            </Button>
           </div>
-          <Button
-            variant="contained"
-            size="small"
-            className="add-btn"
-            onClick={() => {
-              setMod("add");
-              handleShow();
-            }}
-            data-toggle="modal"
-            sx={{background:"#19376D"}}
-          >
-            <AddIcon />
-          </Button>
-
-          
         </div>
         <TableContainer
           component={Paper}
@@ -235,7 +280,6 @@ export default function BasicTable() {
           <Table
             sx={{
               minWidth: 300,
-              
             }}
             aria-label="simple table"
           >
@@ -287,12 +331,56 @@ export default function BasicTable() {
                           onChange={(e) => onItemCheck(e, company)}
                         />
                       </TableCell>
-                      <TableCell component="th" scope="row">
-                        {company.name}
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          maxWidth: 200,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          // ':hover': {overflow: "visible", whiteSpace: "normal", height: "auto"}
+                        }}
+                      >
+                        <Tooltip title={company.name} placement="bottom-start">
+                          {company.name}
+                        </Tooltip>
                       </TableCell>
-                      <TableCell align="left">{company.location}</TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          maxWidth: 200,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          // ':hover': {overflow: "visible", whiteSpace: "normal", height: "auto"}
+                        }}
+                      >
+                        <Tooltip
+                          title={company.location}
+                          placement="bottom-start"
+                        >
+                          {company.location}
+                        </Tooltip>
+                      </TableCell>
                       <TableCell align="left">{company.compType}</TableCell>
-                      <TableCell align="left">{company.industry}</TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          maxWidth: 100,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          // ':hover': {overflow: "visible", whiteSpace: "normal", height: "auto"}
+                        }}
+                      >
+                        <Tooltip
+                          title={company.industry}
+                          placement="bottom-start"
+                        >
+                          {company.industry}
+                        </Tooltip>
+                      </TableCell>
                       <TableCell align="left">
                         <span
                           className="stage"
@@ -326,6 +414,7 @@ export default function BasicTable() {
                         >
                           Delete
                         </Button>
+                        <ToastContainer />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -334,6 +423,9 @@ export default function BasicTable() {
           <TableFooter>
             <div className="pagination">
               <TablePagination
+              sx={{
+                justifyContent:"center",
+                display:'flex'}}
                 component="div"
                 count={company.length}
                 page={page}
@@ -344,6 +436,7 @@ export default function BasicTable() {
               />
             </div>
           </TableFooter>
+          
         </TableContainer>
       </div>
       <Modal show={show} onHide={handleClose}>
@@ -356,4 +449,3 @@ export default function BasicTable() {
     </>
   );
 }
-
