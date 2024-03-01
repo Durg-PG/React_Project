@@ -98,11 +98,19 @@ export default function MiniDrawer() {
     const theme = useTheme();
     const navigate = useNavigate()
     const [open, setOpen] = React.useState(false);
-    const [flag,setFlag]=React.useState("table")
+    const [flag, setFlag] = React.useState("table")
+    const [name, setName] = React.useState('')
 
-    const name = JSON.parse(localStorage.getItem("user"))[0].name
 
-    console.log("name==>>", name)
+
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.length > 0 && userData[0].name) {
+        setName(userData[0].name);
+    }
+
+    // console.log("name==>>", userData.name);
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -118,12 +126,6 @@ export default function MiniDrawer() {
         navigate("/")
     }
 
-    const handleAnalytics = () => {
-        console.log("Redirecting Analytics")
-        // localStorage.removeItem("user")
-        navigate("/analytics")
-
-    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -146,8 +148,8 @@ export default function MiniDrawer() {
                         <img src='..\logo-dark_257ecddf.svg'>
                         </img>
 
-                        <Tooltip title={name}>
-                            <Avatar alt="Remy Sharp" src="https://picsum.photos/200" />
+                        <Tooltip title={userData.name}>
+                            <Avatar alt="Name" src="https://picsum.photos/200" />
                         </Tooltip></Box>
 
                 </Toolbar>
@@ -155,14 +157,14 @@ export default function MiniDrawer() {
 
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose} sx={{color:'white'}}>
+                    <IconButton onClick={handleDrawerClose} sx={{ color: 'white' }}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
 
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setFlag("table")}}>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { setFlag("table") }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -183,11 +185,11 @@ export default function MiniDrawer() {
                             <ListItemText primary="Companies" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
-                    
 
-                    
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setFlag("dash");}}>
+
+
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { setFlag("dash"); }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
@@ -232,7 +234,7 @@ export default function MiniDrawer() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                {flag==="dash"? <Dashboard/>:<BasicTable/>}
+                {flag === "dash" ? <Dashboard /> : <BasicTable />}
             </Box>
         </Box>
     );

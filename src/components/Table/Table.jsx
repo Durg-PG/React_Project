@@ -121,23 +121,19 @@ export default function BasicTable() {
     setSelectedCompanies(company.filter((e) => e.selected));
   };
   const csvData = [
-    ["Id", "Company Name", "Location", "Company Type", "Industry", "Stage"],
-    selectedCompanies.map(
-      ({ id, name, location, compType, industry, stage }) => [
-        id,
-        name,
-        location,
-        compType,
-        industry,
-        stage,
-      ]
-    ),
-  ];
+    // getSelectedRows()
+    ['Id','Company Name','Location','Company Type','Industry','Stage'],
+    ...selectedCompanies.map(
+      (item)=>[
+      item.id,item.compName,item.location,item.compType,item.industry,item.stage
+    ])
+  ]
 
   return (
     <>
       <div className="Table">
         <div className="headerRow">
+          <div className="left">
           <h2 style={{ color: "#253053" }}>Companies</h2>
 
           <div className="input-searchform">
@@ -199,6 +195,8 @@ export default function BasicTable() {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          </div>
+          <div className="right">
           <div class="rightbtn">
             <CSVLink
               filename="Company List.csv"
@@ -206,7 +204,8 @@ export default function BasicTable() {
               className="downloadbtn"
             
             >
-              <Button variant="contained" size="small" className="add-btn" sx={{background:"#19376D"}}>
+              <Button variant="contained" size="small" className="add-btn" sx={{background:"#19376D"}}
+              onClick={getSelectedRows} SE>
                 <DownloadIcon />
               </Button>
             </CSVLink>
@@ -224,7 +223,7 @@ export default function BasicTable() {
           >
             <AddIcon />
           </Button>
-
+          </div>
           
         </div>
         <TableContainer
