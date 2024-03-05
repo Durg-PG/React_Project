@@ -11,7 +11,7 @@ export const CompanyProvider = (props)=>{
     const getCompany = JSON.parse(localStorage.getItem('company'));
 
      const [company, setCompany]= useState(getCompany? getCompany:[])//global state
-     console.log(company);
+    //  console.log(company);
     return(
         <CompanyContext.Provider value={[company, setCompany]}>
             <editContext.Provider value={[editid,setId]}>

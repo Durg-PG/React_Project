@@ -27,13 +27,10 @@
 }
 
 .form-innerdiv {
-  position: relative;
-  z-index: 1;
+
   background: #ffffff;
-  /* max-width: 360px; */
-  margin: 0 auto;
-  padding: 45px;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+  padding-bottom: 2rem;
 }
 
 .form-innerdiv button {
@@ -86,3 +83,7 @@ margin-top:20px;
 .extra span {
   padding: 10px;
 }
+
+/* .form-select:hover{
+  background-color: #253053;
+} */

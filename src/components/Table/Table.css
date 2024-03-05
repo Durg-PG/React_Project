@@ -22,23 +22,41 @@
     color: white
 }
 
+
 .actions{
     margin-right: 0;
     align-items: left;
     float: left;
     
 }
+
 .headerRow{
     display: inline-flex;
     float: left;
-    gap: 40px;
+  gap: 30px;
     padding-bottom: 10px;
+    align-items: center;
+    width: 100%;
+    
+}
+.right {
+    width: 50%;
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* flex-direction: row; */
+    justify-content: flex-end;
+    gap: 3rem;
+    align-items: center;
+}
+.left{
+    width: 50%;
+    display: contents;
 }
 .Filter-add{
     /* display: inline-flex; */
     /* margin-left: 25rem; */
     float: right;
-    margin-right: 0;
+    /* margin-right: 0; */
     gap : 95px
 }
 
@@ -46,6 +64,9 @@
     margin-top: 10rem;
 }
 
+.input-searchform{
+    width: 500px;
+}
 .pagination{
     align-items: start;
 }
@@ -68,4 +89,8 @@
     max-width: 800px;
     margin: 1.75rem auto;
     padding-left: 65px;
+}
+
+.modal-body {
+    padding-top: 0;
 }

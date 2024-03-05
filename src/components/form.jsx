@@ -18,9 +18,8 @@ export default function Form1({
   const [compType, setCompType] = useState(initialValues.compType);
   const [industry, setIndustry] = useState(initialValues.industry);
   const [stage, setStage] = useState(initialValues.stage || "Active");
+  const [selected, setSelected] = useState("");
 
-  const [company, setCompany] = useContext(CompanyContext);
-  console.log("names", companyNames);
   const [show, setShow] = useState(false);
 
   const handleShow = () => setShow(true);
@@ -42,6 +41,7 @@ export default function Form1({
           compType: compType,
           industry: industry,
           stage: stage,
+          selected:selected,
         });
       }
     } else {
@@ -51,9 +51,6 @@ export default function Form1({
     setValidated(true);
   };
 
-  useEffect(() => {
-    localStorage.setItem("company", JSON.stringify(company));
-  }, [company]);
 
   return (
     <>

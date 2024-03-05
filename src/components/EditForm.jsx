@@ -29,6 +29,7 @@ export default function EditForm() {
             compType: formData.compType,
             industry: formData.industry,
             stage: formData.stage,
+            selected:formData.selected
           }
         : item
     );

@@ -34,6 +34,7 @@ import EditCompany from "../EditCompany";
 import Form1 from "../form"
 import AddForm from "../AddForm";
 import EditForm from "../EditForm";
+import CSV from "../csv";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -55,8 +56,6 @@ export default function BasicTable() {
   const [company, setCompany] = useContext(CompanyContext);
   const [filteredComp, setFilteredComp] = useState("");
   const [flag, setFlag] = useState("false");
-
-  // const [rows, setRows] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -91,70 +90,59 @@ export default function BasicTable() {
     setCompany(filterCompany);
   };
 
+
+  // useEffect(()=>{
+  //   setSelectedCompanies(company.filter((e) => e.selected))
+  //   setMasterChecked(selectedCompanies.length === company.length)    
+  // },)
+  useEffect(() => {
+    getSelectedRows()
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("company", JSON.stringify(company));
     handleClose();
+    getSelectedRows()
+// console.log(selectedCompanies)
+    // console.log(company)
+    setMasterChecked(selectedCompanies.length === company.length)    
   }, [company]);
 
-  const onItemCheck = (e, comp) => {
-    let tempList = company;
-    // console.log(tempList)
-    tempList.map((tempcompany) => {
-      // console.log(tempcompany)
-      if (tempcompany.id === comp.id) {
-        tempcompany.selected = e.target.checked;
-      }
-      return tempcompany;
-    });
-    const totalItems = company.length;
-    const totalCheckedItems = tempList.filter((e) => e.selected).length;
-    // Update State
-    setMasterChecked(totalItems === totalCheckedItems);
-    setSelectedCompanies(company.filter((e) => e.selected));
-  };
+
+  useEffect(()=>{
+    setMasterChecked(selectedCompanies.length === company.length)    
+  },[selectedCompanies])
+
+  
+const onItemCheck = (e,comp) => {
+    comp.selected = e.target.checked;
+    getSelectedRows()
+    // setMasterChecked(selectedCompanies.length === company.length)    
+  }    
+ 
 
   const onMasterCheck = (e) => {
-    let tempList = company;
-    // Check/ UnCheck All Items
-    tempList.map((company) => (company.selected = e.target.checked));
-
-    //Update State
-    setSelectedCompanies(company.filter((e) => e.selected));
-    setMasterChecked(e.target.checked);
-  };
+    company.map((comp) => (comp.selected = e.target.checked));
+    getSelectedRows()
+  }
 
   const getSelectedRows = () => {
     setSelectedCompanies(company.filter((e) => e.selected));
-  };
-  const csvData = [
-    // getSelectedRows()
-    ["Id", "Company Name", "Location", "Company Type", "Industry", "Stage"],
-    selectedCompanies.map(
-      ({ id, name, location, compType, industry, stage }) => [
-        id,
-        name,
-        location,
-        compType,
-        industry,
-        stage,
-      ]
-    ),
-  ];
+  }
+
+
 
   return (
     <>
       <div className="Table">
         <div className="headerRow">
+        <div className="left">
           <h2 style={{ color: "#253053" }}>Companies</h2>
 
           <div className="input-searchform">
             <Form.Group as={Col}>
               <InputGroup>
-                <InputGroup.Text
-                // onClick={() => {
-                //   console.log(search);
-                // }}
-                >
+                <InputGroup.Text>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -175,7 +163,7 @@ export default function BasicTable() {
               </InputGroup>
             </Form.Group>
           </div>
-          <div className="Filter-add d-flex justify-content-between align-items-center">
+     
             <Dropdown>
               <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
                 <FilterAltIcon></FilterAltIcon>
@@ -209,25 +197,29 @@ export default function BasicTable() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-
-            <CSVLink
+            </div>
+            <div className="right">
+            {/* <div className="Filter-add d-flex justify-content-between align-items-right"> */}
+            {selectedCompanies.length!==0?<CSV selectedCompanies={selectedCompanies}/>:""}
+            {/* <CSVLink
               filename="Company List.csv"
               data={csvData}
+              
               className="downloadbtn"
             >
               <Button
                 onClick={getSelectedRows}
                 variant="contained"
-                size="medium"
-                className="add-btn"
+                size="small"
+                className="csv-btn"
               >
-                <DownloadIcon></DownloadIcon>
+                <DownloadIcon/>
               </Button>
-            </CSVLink>
+            </CSVLink> */}
             <Button
               variant="contained"
-              size="medium"
-              className="add-btn"
+              size="small"
+              // className="add-btn"
               onClick={() => {
                 setMod("add");
                 handleShow();
@@ -237,9 +229,6 @@ export default function BasicTable() {
               <AddIcon />
             </Button>
 
-            {/* <Link to="/add"> 
-          <Button variant="contained"  size="medium" className="add-btn"><AddIcon></AddIcon></Button>
-         </Link> */}
           </div>
         </div>
         <TableContainer
@@ -250,12 +239,17 @@ export default function BasicTable() {
             <TableHead>
               <TableRow>
                 <TableCell align="left">
-                  <Checkbox
+                  {/* <Checkbox
                     {...label}
                     checked={MasterChecked}
                     id="mastercheck"
                     onChange={(e) => onMasterCheck(e)}
-                  />
+                  /> */}
+                  <input type="checkbox" 
+               checked={MasterChecked}
+               id="mastercheck"
+               onChange={(e) => onMasterCheck(e)}
+               />
                 </TableCell>
                 <TableCell align="left">Company Name</TableCell>
                 <TableCell align="left">Location</TableCell>
@@ -290,11 +284,16 @@ export default function BasicTable() {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell align="left">
-                        <Checkbox
+                        {/* <Checkbox
                           id={company.id}
                           checked={company.selected}
                           onChange={(e) => onItemCheck(e, company)}
-                        />
+                        />  */}
+                         <input type="checkbox" 
+                  id={company.id}
+                  checked = {company.selected}
+                  onChange={(e) => onItemCheck(e, company)}
+                   />
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {company.name}
@@ -358,10 +357,6 @@ export default function BasicTable() {
         <Modal.Header closeButton>
         </Modal.Header>
         <Modal.Body>
-          {/* <AddCompany /> */}
-          {/* {mod === "add" ? <AddCompany /> : ""} */}
-          {/* {mod === "edit" ? <EditCompany /> : ""} */}
-        
           {mod === "add" ? <AddForm/> : ""}
           {mod === "edit" ? <EditForm/> : ""}
         </Modal.Body>
