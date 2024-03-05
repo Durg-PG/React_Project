@@ -21,3 +21,4 @@ export const CompanyProvider = (props)=>{
         </CompanyContext.Provider>
     );
 }
+

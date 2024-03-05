@@ -1,5 +1,4 @@
 .newcomp-form {
-
   width: 90%;
   /* padding: 2% 0 2%; */
   margin: auto;
@@ -27,9 +26,9 @@
 }
 
 .form-innerdiv {
-
+ 
   background: #ffffff;
-
+ 
   padding-bottom: 2rem;
 }
 
@@ -43,7 +42,7 @@
   padding: 15px;
   color: #ffffff;
   font-size: 14px;
-margin-top:20px;
+  margin-top: 20px;
   font-weight: 700;
 }
 
@@ -53,14 +52,12 @@ margin-top:20px;
   background: #6c86dd;
 }
 
-
-.main-div{
-    width: 500px;
-    height: 400px;
-    /* background-color: red; */
-    
-} */
-.dropdown {
+.main-div {
+  width: 500px;
+  height: 400px;
+  /* background-color: red; */
+}
+*/ .dropdown {
   /* width: 10%; */
   padding: 10px;
   display: inline-flex;
@@ -84,6 +81,10 @@ margin-top:20px;
   padding: 10px;
 }
 
-/* .form-select:hover{
-  background-color: #253053;
-} */
+tfoot {
+  .MuiTableFooter-root {
+    background: red;
+    align-items: baseline;
+  }
+}
+
