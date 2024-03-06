@@ -267,9 +267,9 @@ const onItemCheck = (e,comp) => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell align="left">
-                        <Checkbox
-                          id="{company.id}"
-                          checked={company.selected}
+                      <Checkbox
+                          id={company.id}
+                          checked={Boolean(company.selected)}
                           onChange={(e) => onItemCheck(e, company)}
                         />
                       </TableCell>

@@ -40,6 +40,6 @@ test('to render password field present', () => {
   <Router>
       <Home />
   </Router>);
-  const pass = screen.getByPlaceholderText("password");
+  const pass = screen.getByPlaceholderText("pass");
   expect(pass).toBeInTheDocument();
 });
