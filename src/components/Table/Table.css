@@ -7,7 +7,6 @@
 }
 
 .stage {
-  /* background-color: #FA8072; */
   padding: 10px 20px;
   border-radius: 5px;
   margin-left: 0;
@@ -22,7 +21,6 @@
 
 .headerRow {
   display: inline-flex;
-  /* float: left; */
   gap: 40px;
   padding-bottom: 10px;
   width: 100%;
@@ -101,8 +99,6 @@
 .right {
   width: 50%;
   display: flex;
-  /* flex-wrap: wrap; */
-  /* flex-direction: row; */
   justify-content: flex-end;
   gap: 3rem;
   align-items: center;
@@ -111,3 +107,5 @@
   width: 50%;
   display: contents;
 }
+
+

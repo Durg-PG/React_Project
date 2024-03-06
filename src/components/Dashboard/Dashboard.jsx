@@ -6,7 +6,6 @@ import { CompanyContext } from "../Context/CompanyContext";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -37,10 +36,6 @@ const Dashboard = () => {
     <>
       <h2 className="dashH1">Dashboard</h2>
       <div className="charts">
-        {/* <PieChart text={'Company Type'} element1={{value1:B2BCompany.length, name1: 'B2B'}} element2={{value2:B2CCompany.length, name2:'B2C'}} colors={['#365486','#7FC7D9']}></PieChart>
-            <PieChart text={'Stage'} element1={{value1:activeCompany.length, name1: 'Active'}} element2={{value2:inactiveCompany.length, name2:'Inactive'}} colors={['#62718A','#8D8D8D']}></PieChart> */}
-        {/* <PieChart_CompanyType></PieChart_CompanyType>
-        <PieChart_Stage  ></PieChart_Stage> */}
         <Box
           component="section"
           width={'50%'}

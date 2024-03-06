@@ -4,7 +4,6 @@ import { CompanyContext, editContext } from "./Context/CompanyContext";
 import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
 import "../components/style.css";
-import { Modal } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -66,7 +65,6 @@ export default function Form1({
   return (
     <>
       <div className="newcomp-form">
-        {/* <h2>New Company</h2> */}
         <div className="form-innerdiv">
           <Form
             className="compForm"
@@ -81,7 +79,6 @@ export default function Form1({
               </Form.Label>
               <input
                 type="text"
-                // id="name"
                 className="form-control"
                 placeholder="eg. Raytheon technologies"
                 onChange={(e) => setName(e.target.value)}
@@ -186,13 +183,6 @@ export default function Form1({
           </Form>
         </div>
       </div>
-
-      {/*<Modal show={show}>
-         <Modal.Body>
-          <p>company with this name already exits</p>
-          <button onClick={handleClose}>ok</button>
-        </Modal.Body> 
-      </Modal>*/}
     </>
   );
 }

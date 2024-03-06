@@ -5,7 +5,6 @@ const PieChart = (props) => {
     const option = {
         title: {
           text: props.text,
-          // subtext: 'Fake Data',
           left: 'center'
         },
         color:props.colors,
