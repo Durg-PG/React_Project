@@ -1,72 +1,53 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { CompanyContext, editContext } from "./Context/CompanyContext";
+import { CompanyContext, editContext } from "../../context/CompanyContext";
 import { v4 as uuidv4 } from "uuid";
 import Form from "react-bootstrap/Form";
-import "../components/style.css"
-import { Modal } from "react-bootstrap";
-// import ModalDialog from "./modalDialog";
+import "../../style.css";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
-export default function EditCompany() {
-   const[editid,setId] =  useContext(editContext)
-  const [name, setName] = useState(editid.name);
-  const [location, setLocation] = useState(editid.location);
-  const [compType, setCompType] = useState(editid.compType);
-  const [industry, setIndustry] = useState(editid.industry);
-  const [stage, setStage] = useState(editid.stage);
+export function Form1({ onSubmit, initialValues, buttonText, companyNames }) {
+  const [editid,setId] = useContext(editContext);
+  const [name, setName] = useState(initialValues.name|| "");
+  const [location, setLocation] = useState(initialValues.location|| "");
+  const [compType, setCompType] = useState(initialValues.compType|| "");
+  const [industry, setIndustry] = useState(initialValues.industry|| "");
+  const [stage, setStage] = useState(initialValues.stage || "Active");
+  const [selected,setSelected] = useState("");
+  const [company,setCompany] = useContext(CompanyContext);
+  const [show,setShow] = useState("");
 
-  const [company, setCompany] = useContext(CompanyContext);
-
+  const handleShow = () => {
+    setShow(true);
+    toast.error("Company Already Exists !!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  };
+  const handleClose = () => setShow(false);
   const [validated, setValidated] = useState(false);
 
-
-  const [show, setShow] = useState(false);
-//   console.log('in edit');
-
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  
-  // const [showModal, setShowModal] = useState(false);
-  // const handleshowModal = () => setShowModal(true);
-  // const handleCloseModal = () => setShowModal(false);
-
-  var companyNames = [];
-  company.map((comp) => {
-    if(comp.name.toLowerCase() !== editid.name.toLowerCase()){
-    companyNames.push(comp.name.toLowerCase());
-}},[]);
-
-  const editCompany = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault(); //prevents parent element from accessing event
     const form = e.currentTarget;
 
-    if (form.checkValidity() == true) {
+    if (form.checkValidity() === true) {
       if (companyNames.includes(name.toLowerCase())) {
-        // alert('company is already existing')
-        // navigate("/dashboard");
-        handleShow()
-
+        handleShow();
       } else {
-        const editdata = company.map((item)=>
-        item.id === editid.id ?  
-          {
-            id:editid.id,
-            name: name,
-            location: location,
-            compType: compType,
-            industry: industry,
-            stage: stage,
-          }
-          : item)
-        
-  
-        setCompany(editdata);
-
-      // navigate("/dashboard");
-    }
-   } else {
+        onSubmit({
+          id: editid.id || uuidv4,
+          name: name,
+          location: location,
+          compType: compType,
+          industry: industry,
+          stage: stage,
+          selected: selected,
+        });
+      }
+    } else {
       e.preventDefault();
-      e.stopPropagation();
+      e.stopPropagation(); //
     }
     setValidated(true);
   };
@@ -78,24 +59,20 @@ export default function EditCompany() {
   return (
     <>
       <div className="newcomp-form">
-        {/* <h2>New Company</h2> */}
         <div className="form-innerdiv">
-          
           <Form
             className="compForm"
             autoComplete="off"
             noValidate
             validated={validated}
-            onSubmit={editCompany}
+            onSubmit={handleSubmit}
           >
-
             <Form.Group>
               <Form.Label htmlFor="name" className="col-sm-2 col-form-label">
                 Company Name
               </Form.Label>
               <input
                 type="text"
-                // id="name"
                 className="form-control"
                 placeholder="eg. Raytheon technologies"
                 onChange={(e) => setName(e.target.value)}
@@ -103,7 +80,6 @@ export default function EditCompany() {
                 value={name}
                 required
               />
-
               <Form.Control.Feedback type="invalid">
                 Please enter company name.
               </Form.Control.Feedback>
@@ -137,10 +113,10 @@ export default function EditCompany() {
                 label="B2B"
                 required
                 value="B2B"
-                // name="formHorizontalRadios"
                 id="formHorizontalRadios1"
                 className="radio-btn"
-                checked={compType === 'B2B'}
+                checked={compType === "B2B"}
+                name="formHorizontalRadios"
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Check
@@ -148,11 +124,11 @@ export default function EditCompany() {
                 required
                 type="radio"
                 label="B2C"
-                // name="formHorizontalRadios"
                 id="formHorizontalRadios2"
+                name="formHorizontalRadios"
                 className="radio-btn"
                 value="B2C"
-                checked={compType === 'B2C'}
+                checked={compType === "B2C"}
                 onChange={(e) => setCompType(e.target.value)}
               />
               <Form.Control.Feedback type="invalid">
@@ -183,41 +159,24 @@ export default function EditCompany() {
             <Form.Group>
               <Form.Label className="col-sm-2 col-form-label">
                 Select Stage
-                <select
-                  // placeholder='select stage'
-                  value={stage}
-                  className="form-select"
-                  onChange={(e) => setStage(e.target.value)}
-                >
-                  <option value="Active">Active</option>
-
-                  <option value="Inactive">Inactive</option>
-                </select>
               </Form.Label>
+              <select
+                value={stage}
+                className="form-select"
+                onChange={(e) => setStage(e.target.value)}
+              >
+                <option value="Active">Active</option>
+
+                <option value="Inactive">Inactive</option>
+              </select>
             </Form.Group>
 
             <button className="btn btn-primary" type="submit">
-              save
+              {buttonText}
             </button>
           </Form>
         </div>
       </div>
-
-      <Modal show={show}>
-    <Modal.Body>
-        <p>company with this name already exits</p>
-        <button onClick={handleClose}>ok</button>
-    </Modal.Body>
-   
-</Modal>
-
-       {/* <ModalDialog show={showModal} onClose={handleCloseModal}>
-    <Modal.Body>
-        <p>company with this name already exits</p>
-        <button onClick={handleCloseModal}>ok</button>
-    </Modal.Body>
-   
-</ModalDialog> */}
     </>
   );
 }

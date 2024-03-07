@@ -1,12 +1,10 @@
 .newcomp-form {
   width: 90%;
-  /* padding: 2% 0 2%; */
   margin: auto;
 }
 .newcomp-form h2 {
   text-align: center;
   background: #253053;
-  /* margin-bottom: 0; */
   padding: 2%;
   color: #ffffff;
   width: 100%;
@@ -26,9 +24,8 @@
 }
 
 .form-innerdiv {
- 
   background: #ffffff;
- 
+
   padding-bottom: 2rem;
 }
 
@@ -55,10 +52,8 @@
 .main-div {
   width: 500px;
   height: 400px;
-  /* background-color: red; */
 }
-*/ .dropdown {
-  /* width: 10%; */
+.dropdown {
   padding: 10px;
   display: inline-flex;
   flex-wrap: nowrap;
@@ -87,4 +82,3 @@ tfoot {
     align-items: baseline;
   }
 }
-

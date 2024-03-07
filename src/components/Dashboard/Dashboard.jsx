@@ -2,7 +2,7 @@ import React from "react";
 import "../Dashboard/dashboard.css";
 import PieChart from "./PieChart";
 import { useContext } from "react";
-import { CompanyContext } from "../Context/CompanyContext";
+import { CompanyContext } from "../../context/CompanyContext";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";

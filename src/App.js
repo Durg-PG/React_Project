@@ -1,12 +1,13 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './components/Home';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import Errror from './components/Errror';
 import { Routes, Route } from "react-router-dom";
-import { CompanyProvider } from './components/Context/CompanyContext';
-import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
+import { CompanyProvider } from './context/CompanyContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
  return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/dashboard' element={
             <ProtectedRoute>
               <Dashboard />
+              <ToastContainer/>
             </ProtectedRoute>
           } />
           <Route path='*' element={<Errror />} />
